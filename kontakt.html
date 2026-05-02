@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Kontakt & Anfrage | MetallDigital</title>
+    <meta name="description" content="Kostenlose Website-Analyse und Erstgespräch für Metallbau- und Stahlbauunternehmen. Jetzt anfragen.">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300;1,700&family=DM+Mono:wght@400;500&display=swap');
+
+        :root {
+            --bg: #09090b;
+            --surface: #111113;
+            --surface2: #18181b;
+            --border: rgba(255,255,255,0.07);
+            --border-bright: rgba(255,255,255,0.13);
+            --text: #fafafa;
+            --muted: #71717a;
+            --muted2: #52525b;
+            --accent: #3b82f6;
+            --accent-muted: rgba(59,130,246,0.12);
+            --accent-glow: rgba(59,130,246,0.25);
+            --red: #ef4444;
+            --green: #22c55e;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Noise grain */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+            opacity: 0.022;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Grid bg */
+        .grid-bg {
+            background-image:
+                linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+            background-size: 64px 64px;
+        }
+
+        /* Glow */
+        .hero-glow {
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(ellipse at center, rgba(59,130,246,0.11) 0%, transparent 70%);
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            pointer-events: none;
+        }
+
+        /* Tag */
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border: 1px solid var(--border-bright);
+            border-radius: 4px;
+            color: var(--muted);
+            background: var(--surface2);
+            font-family: 'DM Mono', monospace;
+        }
+        .tag-blue {
+            border-color: rgba(59,130,246,0.3);
+            color: var(--accent);
+            background: var(--accent-muted);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent);
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 0.01em;
+            padding: 12px 24px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.12);
+            transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .btn-primary:hover {
+            background: #2563eb;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.25), 0 8px 24px rgba(59,130,246,0.3);
+            transform: translateY(-1px);
+        }
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 14px;
+            padding: 12px 20px;
+            border: 1px solid var(--border-bright);
+            border-radius: 6px;
+            background: var(--surface2);
+            transition: border-color 0.2s, color 0.2s;
+            white-space: nowrap;
+        }
+        .btn-secondary:hover {
+            border-color: rgba(255,255,255,0.25);
+            color: var(--text);
+        }
+
+        /* Mobile menu */
+        #mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #mobile-menu.open { transform: translateX(0); }
+        .bar { display: block; width: 22px; height: 2px; background: currentColor; transition: all 0.35s ease; transform-origin: center; }
+        #ham.is-open .bar:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        #ham.is-open .bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        #ham.is-open .bar:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+        /* Form inputs */
+        .form-field {
+            width: 100%;
+            background: var(--surface2);
+            border: 1px solid var(--border-bright);
+            border-radius: 6px;
+            padding: 13px 16px;
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+            resize: none;
+        }
+        .form-field::placeholder { color: var(--muted2); }
+        .form-field:focus {
+            border-color: rgba(59,130,246,0.5);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+        }
+        .form-field.error {
+            border-color: rgba(239,68,68,0.5);
+            box-shadow: 0 0 0 3px rgba(239,68,68,0.08);
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            font-family: 'DM Mono', monospace;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+        .form-label .required { color: var(--accent); margin-left: 3px; }
+
+        .field-error {
+            font-size: 12px;
+            color: var(--red);
+            margin-top: 6px;
+            font-family: 'DM Mono', monospace;
+            display: none;
+        }
+        .field-error.show { display: block; }
+
+        /* Package selector */
+        .pkg-option {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+            background: var(--surface2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .pkg-option:hover { border-color: var(--border-bright); }
+        .pkg-option.selected {
+            border-color: rgba(59,130,246,0.4);
+            background: var(--accent-muted);
+        }
+        .pkg-radio {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1.5px solid var(--border-bright);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            shrink: 0;
+            transition: border-color 0.2s;
+            flex-shrink: 0;
+        }
+        .pkg-option.selected .pkg-radio {
+            border-color: var(--accent);
+        }
+        .pkg-radio-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+        .pkg-option.selected .pkg-radio-dot { opacity: 1; }
+
+        /* Info card */
+        .info-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--surface);
+            padding: 24px;
+        }
+
+        /* Success state */
+        .success-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 64px 32px;
+        }
+        .success-screen.show { display: flex; }
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(34,197,94,0.12);
+            border: 1.5px solid rgba(34,197,94,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes scaleIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* Mono util */
+        .mono { font-family: 'DM Mono', monospace; }
+
+        /* Fade in */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.55s ease, transform 0.55s ease;
+        }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* Spinner */
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: none;
+        }
+        .spinner.show { display: block; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Logo pill */
+        .logo-pill {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 8px 16px;
+            background: var(--surface);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted2);
+            font-family: 'DM Mono', monospace;
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="fixed top-0 inset-x-0 z-50 border-b" style="background:rgba(9,9,11,0.85);backdrop-filter:blur(16px);border-color:var(--border);">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-5 sm:px-8 py-4">
+        <div class="flex items-center gap-12">
+            <a href="index.html" class="font-bold text-[15px] tracking-tight shrink-0" style="color:var(--text);">
+                Metall<span style="color:var(--accent);">Digital</span>
+            </a>
+            <ul class="hidden lg:flex space-x-10 text-[12px] font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
+                <li><a href="index.html#leistungen" class="hover:text-white transition">Leistungen</a></li>
+                <li><a href="index.html#warum"      class="hover:text-white transition">Warum jetzt</a></li>
+                <li><a href="index.html#vorgehen"   class="hover:text-white transition">Vorgehen</a></li>
+                <li><a href="index.html#referenzen" class="hover:text-white transition">Referenzen</a></li>
+            </ul>
+        </div>
+        <div class="flex items-center gap-4">
+            <a href="kontakt.html" class="hidden sm:inline-flex btn-primary">
+                Kostenlos anfragen
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <button id="ham" aria-label="Menü öffnen"
+                    class="lg:hidden flex flex-col gap-[5px] items-center justify-center w-10 h-10 focus:outline-none" style="color:var(--text);">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div id="mobile-menu" class="fixed inset-0 z-40 flex flex-col lg:hidden" style="background:var(--bg);">
+    <div class="px-5 pt-24 pb-12 flex-1 flex flex-col">
+        <nav class="flex flex-col gap-1 mb-10">
+            <a href="index.html#leistungen" class="mob-link flex items-center justify-between py-4 text-[22px] font-bold tracking-tight border-b" style="border-color:var(--border);color:var(--text);">
+                Leistungen
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--muted2);"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="index.html#warum" class="mob-link flex items-center justify-between py-4 text-[22px] font-bold tracking-tight border-b" style="border-color:var(--border);color:var(--text);">
+                Warum jetzt
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--muted2);"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="index.html#vorgehen" class="mob-link flex items-center justify-between py-4 text-[22px] font-bold tracking-tight border-b" style="border-color:var(--border);color:var(--text);">
+                Vorgehen
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--muted2);"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="index.html#referenzen" class="mob-link flex items-center justify-between py-4 text-[22px] font-bold tracking-tight border-b" style="border-color:var(--border);color:var(--text);">
+                Referenzen
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--muted2);"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </nav>
+        <a href="kontakt.html" class="btn-primary w-full justify-center text-[15px] py-4">
+            Kostenlos anfragen
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+    </div>
+    <div class="px-5 py-6 border-t flex gap-6 text-[12px] font-bold uppercase tracking-widest mono" style="border-color:var(--border);color:var(--muted2);">
+        <a href="#" class="hover:text-white transition">Impressum</a>
+        <a href="#" class="hover:text-white transition">Datenschutz</a>
+        <a href="#" class="hover:text-white transition">LinkedIn</a>
+    </div>
+</div>
+
+<!-- MAIN -->
+<main class="pt-16">
+
+    <!-- HERO / INTRO -->
+    <section class="relative grid-bg overflow-hidden pt-20 pb-16 sm:pt-28 sm:pb-20">
+        <div class="hero-glow"></div>
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 relative z-10">
+
+            <!-- Breadcrumb -->
+            <div class="flex items-center gap-2 mb-8 text-[12px] mono fade-in" style="color:var(--muted2);">
+                <a href="index.html" class="hover:text-white transition">Startseite</a>
+                <span>/</span>
+                <span style="color:var(--muted);">Kontakt</span>
+            </div>
+
+            <div class="mb-5 fade-in">
+                <span class="tag tag-blue">
+                    <span>●</span> Kostenloses Erstgespräch · Keine Agentur-Bürokratie
+                </span>
+            </div>
+
+            <h1 class="fade-in text-[clamp(2.4rem,6vw,5rem)] font-bold tracking-[-0.04em] leading-[1.05] mb-6 max-w-3xl" style="transition-delay:0.07s;">
+                Starten wir Ihr<br>
+                <span style="color:var(--accent);">Digitalprojekt.</span>
+            </h1>
+            <p class="fade-in text-[clamp(0.95rem,1.8vw,1.1rem)] leading-relaxed max-w-xl mb-0" style="color:var(--muted);transition-delay:0.14s;">
+                Füllen Sie das Formular aus — ich melde mich innerhalb von 24 Stunden mit einer kostenlosen Website-Analyse und konkreten nächsten Schritten.
+            </p>
+        </div>
+    </section>
+
+    <!-- FORM SECTION -->
+    <section class="py-12 sm:py-20" style="border-top:1px solid var(--border);">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+
+                <!-- LEFT: FORM -->
+                <div class="lg:col-span-7">
+
+                    <!-- Form card -->
+                    <div class="border rounded-lg overflow-hidden fade-in" style="border-color:var(--border);background:var(--surface);">
+
+                        <!-- Form header bar -->
+                        <div class="px-8 py-5 border-b flex items-center justify-between" style="border-color:var(--border);background:rgba(255,255,255,0.02);">
+                            <span class="mono text-[11px]" style="color:var(--muted2);">Anfrage-Formular · MetallDigital</span>
+                            <span class="mono text-[11px] flex items-center gap-1.5" style="color:var(--green);">
+                                <span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;"></span>
+                                Sicher & verschlüsselt
+                            </span>
+                        </div>
+
+                        <!-- SUCCESS SCREEN -->
+                        <div id="success-screen" class="success-screen">
+                            <div class="success-icon">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <h2 class="text-[24px] font-bold tracking-tight mb-3">Nachricht erhalten!</h2>
+                            <p class="text-[15px] leading-relaxed mb-8 max-w-sm" style="color:var(--muted);">
+                                Danke für Ihre Anfrage. Ich melde mich innerhalb von <strong style="color:var(--text);">24 Stunden</strong> mit Ihrer persönlichen Website-Analyse und konkreten nächsten Schritten.
+                            </p>
+                            <div class="border rounded-lg px-6 py-4 mb-8 text-left w-full max-w-sm" style="border-color:rgba(34,197,94,0.2);background:rgba(34,197,94,0.05);">
+                                <p class="mono text-[11px] mb-2" style="color:rgba(34,197,94,0.7);">Was passiert als nächstes?</p>
+                                <ul class="space-y-2 text-[13px]" style="color:var(--muted);">
+                                    <li class="flex gap-2"><span style="color:var(--green);">✓</span> Kostenlose Analyse Ihrer aktuellen Website</li>
+                                    <li class="flex gap-2"><span style="color:var(--green);">✓</span> Konkretes Angebot passend zu Ihrem Betrieb</li>
+                                    <li class="flex gap-2"><span style="color:var(--green);">✓</span> Kein Verkaufsdruck, keine Agentur-Bürokratie</li>
+                                </ul>
+                            </div>
+                            <a href="index.html" class="btn-secondary">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+                                Zurück zur Startseite
+                            </a>
+                        </div>
+
+                        <!-- FORM -->
+                        <form id="contact-form" class="p-8 space-y-6">
+
+                            <!-- Name + E-Mail -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div>
+                                    <label for="name" class="form-label">Name<span class="required">*</span></label>
+                                    <input type="text" id="name" name="name" placeholder="Max Mustermann"
+                                           class="form-field" autocomplete="name">
+                                    <p class="field-error" id="name-error">Bitte geben Sie Ihren Namen ein.</p>
+                                </div>
+                                <div>
+                                    <label for="email" class="form-label">E-Mail<span class="required">*</span></label>
+                                    <input type="email" id="email" name="email" placeholder="max@metallbau.de"
+                                           class="form-field" autocomplete="email">
+                                    <p class="field-error" id="email-error">Bitte geben Sie eine gültige E-Mail-Adresse ein.</p>
+                                </div>
+                            </div>
+
+                            <!-- Unternehmen + Telefon -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div>
+                                    <label for="company" class="form-label">Unternehmen</label>
+                                    <input type="text" id="company" name="company" placeholder="Mustermann Metallbau GmbH"
+                                           class="form-field" autocomplete="organization">
+                                </div>
+                                <div>
+                                    <label for="phone" class="form-label">Telefon</label>
+                                    <input type="tel" id="phone" name="phone" placeholder="+49 (0) 123 456789"
+                                           class="form-field" autocomplete="tel">
+                                </div>
+                            </div>
+
+                            <!-- Paket-Auswahl -->
+                            <div>
+                                <label class="form-label">Paket-Interesse</label>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="pkg-selector">
+                                    <div class="pkg-option selected" data-value="Basis (1.490 €)">
+                                        <div class="pkg-radio"><div class="pkg-radio-dot"></div></div>
+                                        <div>
+                                            <p class="font-bold text-[13px]">Basis</p>
+                                            <p class="mono text-[10px]" style="color:var(--muted2);">1.490 € netto</p>
+                                        </div>
+                                    </div>
+                                    <div class="pkg-option" data-value="Präzision (2.990 €)">
+                                        <div class="pkg-radio"><div class="pkg-radio-dot"></div></div>
+                                        <div>
+                                            <p class="font-bold text-[13px]">Präzision</p>
+                                            <p class="mono text-[10px]" style="color:var(--muted2);">2.990 € netto</p>
+                                        </div>
+                                    </div>
+                                    <div class="pkg-option" data-value="Premium (4.900 €)">
+                                        <div class="pkg-radio"><div class="pkg-radio-dot"></div></div>
+                                        <div>
+                                            <p class="font-bold text-[13px]">Premium</p>
+                                            <p class="mono text-[10px]" style="color:var(--muted2);">4.900 € netto</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Hidden field to pass selected package -->
+                                <input type="hidden" id="package" name="package" value="Basis (1.490 €)">
+                            </div>
+
+                            <!-- Betreff -->
+                            <div>
+                                <label for="subject" class="form-label">Betreff<span class="required">*</span></label>
+                                <input type="text" id="subject" name="subject" placeholder="z. B. Website-Analyse für unseren Betrieb"
+                                       class="form-field">
+                                <p class="field-error" id="subject-error">Bitte geben Sie einen Betreff ein.</p>
+                            </div>
+
+                            <!-- Nachricht -->
+                            <div>
+                                <label for="message" class="form-label">Nachricht<span class="required">*</span></label>
+                                <textarea id="message" name="message" rows="6"
+                                          placeholder="Erzählen Sie mir kurz von Ihrem Betrieb — was machen Sie, wen wollen Sie erreichen, und was nervt Sie an Ihrer aktuellen Website am meisten?"
+                                          class="form-field"></textarea>
+                                <p class="field-error" id="message-error">Bitte schreiben Sie uns eine kurze Nachricht.</p>
+                            </div>
+
+                            <!-- Datenschutz -->
+                            <div class="flex items-start gap-3">
+                                <div class="relative mt-0.5 shrink-0">
+                                    <input type="checkbox" id="privacy" name="privacy"
+                                           class="peer appearance-none w-4 h-4 rounded border cursor-pointer"
+                                           style="border-color:var(--border-bright);background:var(--surface2);">
+                                    <span class="absolute inset-0 flex items-center justify-center opacity-0 peer-checked:opacity-100 pointer-events-none" style="color:var(--accent);">
+                                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </span>
+                                    <style>
+                                        #privacy:checked { background: var(--accent); border-color: var(--accent); }
+                                        #privacy:focus { outline: 2px solid rgba(59,130,246,0.3); outline-offset: 2px; }
+                                    </style>
+                                </div>
+                                <label for="privacy" class="text-[12px] leading-relaxed cursor-pointer" style="color:var(--muted);">
+                                    Ich habe die <a href="#" class="underline hover:text-white transition">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage zu.<span class="required" style="color:var(--accent);margin-left:2px;">*</span>
+                                </label>
+                            </div>
+                            <p class="field-error" id="privacy-error" style="margin-top:-16px;">Bitte stimmen Sie der Datenschutzerklärung zu.</p>
+
+                            <!-- Submit -->
+                            <div class="pt-2">
+                                <button type="submit" id="submit-btn" class="btn-primary w-full justify-center text-[15px] py-3.5">
+                                    <span id="btn-text">Anfrage absenden</span>
+                                    <div class="spinner" id="btn-spinner"></div>
+                                    <svg id="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                </button>
+                                <p class="text-center mono text-[11px] mt-4" style="color:var(--muted2);">
+                                    Pflichtfelder mit <span style="color:var(--accent);">*</span> markiert · Keine Weitergabe an Dritte · Antwort innerhalb von 24 Stunden
+                                </p>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+                <!-- RIGHT: INFO -->
+                <div class="lg:col-span-5 space-y-5 fade-in" style="transition-delay:0.1s;">
+
+                    <!-- Direct contact -->
+                    <div class="info-card">
+                        <p class="mono text-[10px] mb-4" style="color:var(--muted2);letter-spacing:0.2em;">Direktkontakt</p>
+                        <div class="space-y-4">
+                            <a href="mailto:kontakt@metalldigital.com" class="flex items-center gap-4 group">
+                                <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background:var(--accent-muted);border:1px solid rgba(59,130,246,0.2);">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                </div>
+                                <div>
+                                    <p class="mono text-[10px] mb-0.5" style="color:var(--muted2);">E-Mail</p>
+                                    <p class="font-semibold text-[14px] group-hover:text-blue-400 transition">kontakt@metalldigital.com</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Response promise -->
+                    <div class="info-card">
+                        <p class="mono text-[10px] mb-4" style="color:var(--muted2);letter-spacing:0.2em;">Was Sie erwartet</p>
+                        <ul class="space-y-4">
+                            <li class="flex gap-4">
+                                <div class="w-8 h-8 rounded-full border flex items-center justify-center shrink-0 mono text-[11px]" style="border-color:var(--border-bright);background:var(--surface2);color:var(--accent);">01</div>
+                                <div>
+                                    <p class="font-semibold text-[14px] mb-1">Kostenlose Analyse</p>
+                                    <p class="text-[13px]" style="color:var(--muted);">Ich prüfe Ihre aktuelle Website auf technische Schwachstellen, SEO-Lücken und Conversion-Probleme.</p>
+                                </div>
+                            </li>
+                            <li class="flex gap-4">
+                                <div class="w-8 h-8 rounded-full border flex items-center justify-center shrink-0 mono text-[11px]" style="border-color:var(--border-bright);background:var(--surface2);color:var(--accent);">02</div>
+                                <div>
+                                    <p class="font-semibold text-[14px] mb-1">Strategie-Gespräch</p>
+                                    <p class="text-[13px]" style="color:var(--muted);">Wir klären zusammen, was Ihre neue Website leisten soll — ohne Verkaufsdruck.</p>
+                                </div>
+                            </li>
+                            <li class="flex gap-4">
+                                <div class="w-8 h-8 rounded-full border flex items-center justify-center shrink-0 mono text-[11px]" style="border-color:var(--border-bright);background:var(--surface2);color:var(--accent);">03</div>
+                                <div>
+                                    <p class="font-semibold text-[14px] mb-1">Konkretes Angebot</p>
+                                    <p class="text-[13px]" style="color:var(--muted);">Sie erhalten ein individuelles Angebot mit klaren Leistungen, Preisen und Zeitplan.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Trust badges -->
+                    <div class="info-card">
+                        <p class="mono text-[10px] mb-4" style="color:var(--muted2);letter-spacing:0.2em;">Branchenkenntnis</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="logo-pill">DIN EN 1090</span>
+                            <span class="logo-pill">EXC 1–3</span>
+                            <span class="logo-pill">DSGVO</span>
+                            <span class="logo-pill">BIM-ready</span>
+                            <span class="logo-pill">Core Web Vitals A</span>
+                        </div>
+                    </div>
+
+                    <!-- No-risk note -->
+                    <div class="border rounded-lg px-6 py-5" style="border-color:rgba(59,130,246,0.2);background:var(--accent-muted);">
+                        <p class="font-bold text-[14px] mb-2" style="color:var(--accent);">Keine versteckten Kosten.</p>
+                        <p class="text-[13px] leading-relaxed" style="color:var(--muted);">
+                            Die Website-Analyse und das Erstgespräch sind vollständig kostenlos und unverbindlich. Kein Auftrag entsteht ohne Ihre ausdrückliche Bestätigung.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="py-10" style="border-top:1px solid var(--border);background:var(--bg);">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 flex flex-col sm:flex-row justify-between items-center gap-6">
+        <p class="mono text-[11px]" style="color:var(--muted2);">
+            © 2026 Metalldigital — Webentwicklung für Metallbau · Deutschland
+        </p>
+        <div class="flex gap-6 sm:gap-8 mono text-[11px]" style="color:var(--muted2);">
+            <a href="#" class="hover:text-white transition">Impressum</a>
+            <a href="#" class="hover:text-white transition">Datenschutz</a>
+            <a href="#" class="hover:text-white transition">LinkedIn</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+/* ── Mobile menu ── */
+const ham        = document.getElementById('ham');
+const mobileMenu = document.getElementById('mobile-menu');
+ham.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.contains('open');
+    ham.classList.toggle('is-open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+});
+mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    ham.classList.remove('is-open');
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+}));
+
+/* ── Package selector ── */
+const pkgOptions = document.querySelectorAll('.pkg-option');
+const pkgInput   = document.getElementById('package');
+pkgOptions.forEach(opt => {
+    opt.addEventListener('click', () => {
+        pkgOptions.forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        pkgInput.value = opt.dataset.value;
+    });
+});
+
+/* ── Scroll fade-in ── */
+(function() {
+    const els = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.05 });
+    els.forEach(el => observer.observe(el));
+})();
+
+/* ── Form submission via Formspree ── */
+const form        = document.getElementById('contact-form');
+const successScreen = document.getElementById('success-screen');
+const submitBtn   = document.getElementById('submit-btn');
+const btnText     = document.getElementById('btn-text');
+const btnSpinner  = document.getElementById('btn-spinner');
+const btnArrow    = document.getElementById('btn-arrow');
+
+// Validation helpers
+function setError(fieldId, errorId, show) {
+    const field = document.getElementById(fieldId);
+    const error = document.getElementById(errorId);
+    if (show) {
+        field.classList.add('error');
+        error.classList.add('show');
+    } else {
+        field.classList.remove('error');
+        error.classList.remove('show');
+    }
+    return !show;
+}
+
+function validateForm() {
+    let valid = true;
+    const name    = document.getElementById('name').value.trim();
+    const email   = document.getElementById('email').value.trim();
+    const subject = document.getElementById('subject').value.trim();
+    const message = document.getElementById('message').value.trim();
+    const privacy = document.getElementById('privacy').checked;
+
+    valid = setError('name',    'name-error',    name.length < 2)    && valid;
+    valid = setError('email',   'email-error',   !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) && valid;
+    valid = setError('subject', 'subject-error', subject.length < 2) && valid;
+    valid = setError('message', 'message-error', message.length < 10) && valid;
+
+    // Privacy checkbox
+    const privacyErr = document.getElementById('privacy-error');
+    if (!privacy) {
+        privacyErr.classList.add('show');
+        valid = false;
+    } else {
+        privacyErr.classList.remove('show');
+    }
+
+    return valid;
+}
+
+// Clear errors on input
+['name','email','subject','message'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => {
+        document.getElementById(id).classList.remove('error');
+        document.getElementById(id + '-error').classList.remove('show');
+    });
+});
+
+form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    // Loading state
+    submitBtn.disabled = true;
+    btnText.textContent = 'Wird gesendet…';
+    btnSpinner.classList.add('show');
+    btnArrow.style.display = 'none';
+
+    const data = {
+        name:    document.getElementById('name').value.trim(),
+        email:   document.getElementById('email').value.trim(),
+        company: document.getElementById('company').value.trim(),
+        phone:   document.getElementById('phone').value.trim(),
+        package: pkgInput.value,
+        subject: document.getElementById('subject').value.trim(),
+        message: document.getElementById('message').value.trim(),
+    };
+
+    try {
+        // ─────────────────────────────────────────────────
+        // FORMSPREE: Replace YOUR_FORM_ID with your actual
+        // Formspree endpoint ID (see setup instructions below)
+        // ─────────────────────────────────────────────────
+        const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            // Show success screen
+            form.style.display = 'none';
+            successScreen.classList.add('show');
+        } else {
+            throw new Error('Server error');
+        }
+    } catch (err) {
+        // Fallback: reset button and show inline error
+        submitBtn.disabled = false;
+        btnText.textContent = 'Anfrage absenden';
+        btnSpinner.classList.remove('show');
+        btnArrow.style.display = '';
+
+        // Show a gentle error message under the button
+        let errMsg = document.getElementById('submit-error');
+        if (!errMsg) {
+            errMsg = document.createElement('p');
+            errMsg.id = 'submit-error';
+            errMsg.style.cssText = 'color:var(--red);font-size:13px;text-align:center;margin-top:12px;font-family:var(--mono, monospace);';
+            submitBtn.parentNode.appendChild(errMsg);
+        }
+        errMsg.textContent = 'Senden fehlgeschlagen. Bitte schreiben Sie uns direkt: kontakt@metalldigital.com';
+    }
+});
+</script>
+
+</body>
+</html>
