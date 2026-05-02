@@ -1,16 +1,8 @@
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
     <title>Kontakt & Anfrage | MetallDigital</title>
     <meta name="description" content="Kostenlose Website-Analyse und Erstgespräch für Metallbau- und Stahlbauunternehmen. Jetzt anfragen.">
 
@@ -143,16 +135,27 @@
             color: var(--text);
         }
 
-        /* Mobile menu */
-        #mobile-menu {
-            transform: translateX(100%);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        /* Back button */
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 13px;
+            font-family: 'DM Mono', monospace;
+            letter-spacing: 0.04em;
+            padding: 8px 14px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--surface2);
+            transition: border-color 0.2s, color 0.2s;
+            text-decoration: none;
         }
-        #mobile-menu.open { transform: translateX(0); }
-        .bar { display: block; width: 22px; height: 2px; background: currentColor; transition: all 0.35s ease; transform-origin: center; }
-        #ham.is-open .bar:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-        #ham.is-open .bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
-        #ham.is-open .bar:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+        .btn-back:hover {
+            border-color: var(--border-bright);
+            color: var(--text);
+        }
 
         /* Form inputs */
         .form-field {
@@ -163,7 +166,7 @@
             padding: 13px 16px;
             color: var(--text);
             font-family: 'DM Sans', sans-serif;
-            font-size: 14px;
+            font-size: 16px; /* ≥16px verhindert iOS-Zoom beim Fokus */
             transition: border-color 0.2s, box-shadow 0.2s;
             outline: none;
             resize: none;
@@ -224,9 +227,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            shrink: 0;
-            transition: border-color 0.2s;
             flex-shrink: 0;
+            transition: border-color 0.2s;
         }
         .pkg-option.selected .pkg-radio {
             border-color: var(--accent);
@@ -316,67 +318,18 @@
 </head>
 <body>
 
-<!-- NAV -->
-<nav class="fixed top-0 inset-x-0 z-50 border-b" style="background:rgba(9,9,11,0.85);backdrop-filter:blur(16px);border-color:var(--border);">
+<!-- MINIMAL HEADER — nur Logo + Zurück-Button -->
+<header class="fixed top-0 inset-x-0 z-50 border-b" style="background:rgba(9,9,11,0.85);backdrop-filter:blur(16px);border-color:var(--border);">
     <div class="max-w-7xl mx-auto flex justify-between items-center px-5 sm:px-8 py-4">
-        <div class="flex items-center gap-12">
-            <a href="index.html" class="font-bold text-[15px] tracking-tight shrink-0" style="color:var(--text);">
-                Metall<span style="color:var(--accent);">Digital</span>
-            </a>
-            <ul class="hidden lg:flex space-x-10 text-[12px] font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
-                <li><a href="index.html#leistungen" class="hover:text-white transition">Leistungen</a></li>
-                <li><a href="index.html#warum"      class="hover:text-white transition">Warum jetzt</a></li>
-                <li><a href="index.html#vorgehen"   class="hover:text-white transition">Vorgehen</a></li>
-                <li><a href="index.html#referenzen" class="hover:text-white transition">Referenzen</a></li>
-            </ul>
-        </div>
-        <div class="flex items-center gap-4">
-            <a href="kontakt.html" class="hidden sm:inline-flex btn-primary">
-                Kostenlos anfragen
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
-            <button id="ham" aria-label="Menü öffnen"
-                    class="lg:hidden flex flex-col gap-[5px] items-center justify-center w-10 h-10 focus:outline-none" style="color:var(--text);">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
-        </div>
-    </div>
-</nav>
-
-<!-- MOBILE MENU -->
-<div id="mobile-menu" class="fixed inset-0 z-40 flex flex-col lg:hidden" style="background:var(--bg);">
-    <div class="px-5 pt-24 pb-12 flex-1 flex flex-col">
-        <nav class="flex flex-col gap-1 mb-10">
-            <a href="index.html#leistungen" class="mob-link flex items-center justify-between py-4 text-[22px] font-bold tracking-tight border-b" style="border-color:var(--border);color:var(--text);">
-                Leistungen
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--muted2);"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
-            <a href="index.html#warum" class="mob-link flex items-center justify-between py-4 text-[22px] font-bold tracking-tight border-b" style="border-color:var(--border);color:var(--text);">
-                Warum jetzt
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--muted2);"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
-            <a href="index.html#vorgehen" class="mob-link flex items-center justify-between py-4 text-[22px] font-bold tracking-tight border-b" style="border-color:var(--border);color:var(--text);">
-                Vorgehen
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--muted2);"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
-            <a href="index.html#referenzen" class="mob-link flex items-center justify-between py-4 text-[22px] font-bold tracking-tight border-b" style="border-color:var(--border);color:var(--text);">
-                Referenzen
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--muted2);"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
-        </nav>
-        <a href="kontakt.html" class="btn-primary w-full justify-center text-[15px] py-4">
-            Kostenlos anfragen
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <a href="index.html" class="font-bold text-[15px] tracking-tight shrink-0" style="color:var(--text);">
+            Metall<span style="color:var(--accent);">Digital</span>
+        </a>
+        <a href="index.html" class="btn-back">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            Zurück
         </a>
     </div>
-    <div class="px-5 py-6 border-t flex gap-6 text-[12px] font-bold uppercase tracking-widest mono" style="border-color:var(--border);color:var(--muted2);">
-        <a href="#" class="hover:text-white transition">Impressum</a>
-        <a href="#" class="hover:text-white transition">Datenschutz</a>
-        <a href="#" class="hover:text-white transition">LinkedIn</a>
-    </div>
-</div>
+</header>
 
 <!-- MAIN -->
 <main class="pt-16">
@@ -485,34 +438,34 @@
                                 </div>
                             </div>
 
-                            <!-- Paket-Auswahl -->
+                            <!-- Paket-Auswahl — kein Paket vorausgewählt -->
                             <div>
                                 <label class="form-label">Paket-Interesse</label>
                                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="pkg-selector">
-                                    <div class="pkg-option selected" data-value="Basis (1.490 €)">
+                                    <div class="pkg-option" data-value="Basis (1.290 €)">
                                         <div class="pkg-radio"><div class="pkg-radio-dot"></div></div>
                                         <div>
                                             <p class="font-bold text-[13px]">Basis</p>
-                                            <p class="mono text-[10px]" style="color:var(--muted2);">1.490 € netto</p>
+                                            <p class="mono text-[10px]" style="color:var(--muted2);">1.290 € netto</p>
                                         </div>
                                     </div>
-                                    <div class="pkg-option" data-value="Präzision (2.990 €)">
+                                    <div class="pkg-option" data-value="Präzision (2.790 €)">
                                         <div class="pkg-radio"><div class="pkg-radio-dot"></div></div>
                                         <div>
                                             <p class="font-bold text-[13px]">Präzision</p>
-                                            <p class="mono text-[10px]" style="color:var(--muted2);">2.990 € netto</p>
+                                            <p class="mono text-[10px]" style="color:var(--muted2);">2.790 € netto</p>
                                         </div>
                                     </div>
-                                    <div class="pkg-option" data-value="Premium (4.900 €)">
+                                    <div class="pkg-option" data-value="Enterprise (4.590 €)">
                                         <div class="pkg-radio"><div class="pkg-radio-dot"></div></div>
                                         <div>
-                                            <p class="font-bold text-[13px]">Premium</p>
-                                            <p class="mono text-[10px]" style="color:var(--muted2);">4.900 € netto</p>
+                                            <p class="font-bold text-[13px]">Enterprise</p>
+                                            <p class="mono text-[10px]" style="color:var(--muted2);">4.590 € netto</p>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- Hidden field to pass selected package -->
-                                <input type="hidden" id="package" name="package" value="Basis (1.490 €)">
+                                <input type="hidden" id="package" name="package" value="">
                             </div>
 
                             <!-- Betreff -->
@@ -575,15 +528,26 @@
                     <div class="info-card">
                         <p class="mono text-[10px] mb-4" style="color:var(--muted2);letter-spacing:0.2em;">Direktkontakt</p>
                         <div class="space-y-4">
-                            <a href="mailto:kontakt@metalldigital.com" class="flex items-center gap-4 group">
+                            <!-- Mobile: kein Link -->
+                            <div class="flex items-center gap-4 sm:hidden">
                                 <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background:var(--accent-muted);border:1px solid rgba(59,130,246,0.2);">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                                 </div>
                                 <div>
                                     <p class="mono text-[10px] mb-0.5" style="color:var(--muted2);">E-Mail</p>
-                                    <p class="font-semibold text-[14px] group-hover:text-blue-400 transition">kontakt@metalldigital.com</p>
+                                    <p class="font-semibold text-[14px]">kontakt@metalldigital.com</p>
                                 </div>
-                            </a>
+                            </div>
+                            <!-- Desktop: kein Link, kein Hover, kein Pointer -->
+                            <div class="hidden sm:flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background:var(--accent-muted);border:1px solid rgba(59,130,246,0.2);">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                </div>
+                                <div>
+                                    <p class="mono text-[10px] mb-0.5" style="color:var(--muted2);">E-Mail</p>
+                                    <p class="font-semibold text-[14px]">kontakt@metalldigital.com</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -657,24 +621,27 @@
 </footer>
 
 <script>
-/* ── Mobile menu ── */
-const ham        = document.getElementById('ham');
-const mobileMenu = document.getElementById('mobile-menu');
-ham.addEventListener('click', () => {
-    const isOpen = mobileMenu.classList.contains('open');
-    ham.classList.toggle('is-open');
-    mobileMenu.classList.toggle('open');
-    document.body.style.overflow = isOpen ? '' : 'hidden';
-});
-mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    ham.classList.remove('is-open');
-    mobileMenu.classList.remove('open');
-    document.body.style.overflow = '';
-}));
-
-/* ── Package selector ── */
+/* ── Package selector — kein Paket beim Laden vorausgewählt ── */
 const pkgOptions = document.querySelectorAll('.pkg-option');
 const pkgInput   = document.getElementById('package');
+
+// URL-Parameter auslesen (z. B. ?paket=praezision)
+(function() {
+    const params  = new URLSearchParams(window.location.search);
+    const paket   = (params.get('paket') || '').toLowerCase();
+    const map = {
+        'basis':      0,
+        'praezision': 1,
+        'enterprise': 2,
+    };
+    if (paket in map) {
+        const idx = map[paket];
+        pkgOptions[idx].classList.add('selected');
+        pkgInput.value = pkgOptions[idx].dataset.value;
+    }
+    // Kein Paket übergeben → nichts vorauswählen
+})();
+
 pkgOptions.forEach(opt => {
     opt.addEventListener('click', () => {
         pkgOptions.forEach(o => o.classList.remove('selected'));
@@ -693,14 +660,13 @@ pkgOptions.forEach(opt => {
 })();
 
 /* ── Form submission via Formspree ── */
-const form        = document.getElementById('contact-form');
+const form          = document.getElementById('contact-form');
 const successScreen = document.getElementById('success-screen');
-const submitBtn   = document.getElementById('submit-btn');
-const btnText     = document.getElementById('btn-text');
-const btnSpinner  = document.getElementById('btn-spinner');
-const btnArrow    = document.getElementById('btn-arrow');
+const submitBtn     = document.getElementById('submit-btn');
+const btnText       = document.getElementById('btn-text');
+const btnSpinner    = document.getElementById('btn-spinner');
+const btnArrow      = document.getElementById('btn-arrow');
 
-// Validation helpers
 function setError(fieldId, errorId, show) {
     const field = document.getElementById(fieldId);
     const error = document.getElementById(errorId);
@@ -727,7 +693,6 @@ function validateForm() {
     valid = setError('subject', 'subject-error', subject.length < 2) && valid;
     valid = setError('message', 'message-error', message.length < 10) && valid;
 
-    // Privacy checkbox
     const privacyErr = document.getElementById('privacy-error');
     if (!privacy) {
         privacyErr.classList.add('show');
@@ -739,7 +704,6 @@ function validateForm() {
     return valid;
 }
 
-// Clear errors on input
 ['name','email','subject','message'].forEach(id => {
     document.getElementById(id).addEventListener('input', () => {
         document.getElementById(id).classList.remove('error');
@@ -751,7 +715,6 @@ form.addEventListener('submit', async function(e) {
     e.preventDefault();
     if (!validateForm()) return;
 
-    // Loading state
     submitBtn.disabled = true;
     btnText.textContent = 'Wird gesendet…';
     btnSpinner.classList.add('show');
@@ -762,16 +725,12 @@ form.addEventListener('submit', async function(e) {
         email:   document.getElementById('email').value.trim(),
         company: document.getElementById('company').value.trim(),
         phone:   document.getElementById('phone').value.trim(),
-        package: pkgInput.value,
+        package: pkgInput.value || 'Kein Paket ausgewählt',
         subject: document.getElementById('subject').value.trim(),
         message: document.getElementById('message').value.trim(),
     };
 
     try {
-        // ─────────────────────────────────────────────────
-        // FORMSPREE: Replace YOUR_FORM_ID with your actual
-        // Formspree endpoint ID (see setup instructions below)
-        // ─────────────────────────────────────────────────
         const response = await fetch('https://formspree.io/f/mdabaavd', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -779,20 +738,17 @@ form.addEventListener('submit', async function(e) {
         });
 
         if (response.ok) {
-            // Show success screen
             form.style.display = 'none';
             successScreen.classList.add('show');
         } else {
             throw new Error('Server error');
         }
     } catch (err) {
-        // Fallback: reset button and show inline error
         submitBtn.disabled = false;
         btnText.textContent = 'Anfrage absenden';
         btnSpinner.classList.remove('show');
         btnArrow.style.display = '';
 
-        // Show a gentle error message under the button
         let errMsg = document.getElementById('submit-error');
         if (!errMsg) {
             errMsg = document.createElement('p');
@@ -807,3 +763,5 @@ form.addEventListener('submit', async function(e) {
 
 </body>
 </html>
+
+
