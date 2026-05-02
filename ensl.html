@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -740,8 +741,7 @@ form.addEventListener('submit', async function(e) {
         if (response.ok) {
             form.style.display = 'none';
             successScreen.classList.add('show');
-            const top = successScreen.getBoundingClientRect().top + window.scrollY - 80;
-            window.scrollTo({ top, behavior: 'instant' });
+            successScreen.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } else {
             throw new Error('Server error');
         }
