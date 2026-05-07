@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Datenschutzerklärung | HOEFTDigital</title>
+    <meta name="robots" content="noindex, nofollow">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300;1,700&family=DM+Mono:wght@400;500&display=swap');
+
+        :root {
+            --bg: #09090b;
+            --surface: #111113;
+            --surface2: #18181b;
+            --border: rgba(255,255,255,0.07);
+            --border-bright: rgba(255,255,255,0.13);
+            --text: #fafafa;
+            --muted: #71717a;
+            --muted2: #52525b;
+            --accent: #3b82f6;
+            --accent-muted: rgba(59,130,246,0.12);
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+            opacity: 0.022;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .grid-bg {
+            background-image:
+                linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+            background-size: 64px 64px;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border: 1px solid var(--border-bright);
+            border-radius: 4px;
+            color: var(--muted);
+            background: var(--surface2);
+            font-family: 'DM Mono', monospace;
+        }
+
+        .mono { font-family: 'DM Mono', monospace; }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent);
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 12px 24px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.12);
+            transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+        }
+        .btn-primary:hover {
+            background: #2563eb;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.25);
+            transform: translateY(-1px);
+        }
+
+        .legal-block {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--surface);
+            overflow: hidden;
+            margin-bottom: 3px;
+        }
+
+        .legal-block-header {
+            padding: 20px 28px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        .legal-block-header:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .legal-block-body {
+            padding: 24px 28px;
+        }
+
+        .legal-block-body p {
+            font-size: 14px;
+            line-height: 1.85;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+        .legal-block-body p:last-child { margin-bottom: 0; }
+
+        .legal-block-body ul {
+            padding-left: 0;
+            list-style: none;
+        }
+        .legal-block-body ul li {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--muted);
+            padding-left: 20px;
+            position: relative;
+            margin-bottom: 4px;
+        }
+        .legal-block-body ul li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--muted2);
+            font-family: 'DM Mono', monospace;
+        }
+
+        .legal-block-body a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: opacity 0.15s;
+        }
+        .legal-block-body a:hover { opacity: 0.75; }
+
+        .legal-block-body strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .section-num {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            color: var(--muted2);
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .chevron {
+            margin-left: auto;
+            transition: transform 0.3s ease;
+            color: var(--muted2);
+            flex-shrink: 0;
+        }
+        .legal-block.open .chevron { transform: rotate(180deg); }
+        .legal-block-body { display: none; }
+        .legal-block.open .legal-block-body { display: block; }
+
+        /* Always-open blocks */
+        .legal-block.always-open .legal-block-body { display: block; }
+        .legal-block.always-open .legal-block-header { cursor: default; }
+        .legal-block.always-open .legal-block-header:hover { background: none; }
+        .legal-block.always-open .chevron { display: none; }
+
+        .toc-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--muted);
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border);
+            transition: color 0.15s;
+            text-decoration: none;
+            font-family: 'DM Mono', monospace;
+            letter-spacing: 0.04em;
+        }
+        .toc-link:hover { color: var(--accent); }
+        .toc-link:last-child { border-bottom: none; }
+
+        .highlight-box {
+            border: 1px solid rgba(59,130,246,0.2);
+            background: var(--accent-muted);
+            border-radius: 6px;
+            padding: 14px 18px;
+            margin-bottom: 14px;
+        }
+        .highlight-box p {
+            color: rgba(147,197,253,0.9) !important;
+            font-size: 13px !important;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.55s ease, transform 0.55s ease;
+        }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* Nav */
+        #mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #mobile-menu.open { transform: translateX(0); }
+        .bar { display: block; width: 22px; height: 2px; background: currentColor; transition: all 0.35s ease; transform-origin: center; }
+        #ham.is-open .bar:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        #ham.is-open .bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        #ham.is-open .bar:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="fixed top-0 inset-x-0 z-50 border-b" style="background:rgba(9,9,11,0.85);backdrop-filter:blur(16px);border-color:var(--border);">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-5 sm:px-8 py-4">
+        <a href="index.html" class="font-bold text-[15px] tracking-tight" style="color:var(--text);">
+            HOEFT<span style="color:var(--accent);">Digital</span>
+        </a>
+        <div class="flex items-center gap-4">
+            <a href="kontakt.html" class="hidden sm:inline-flex btn-primary text-[13px] py-2.5 px-5">
+                Kostenlos anfragen
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="index.html" class="hidden sm:inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-widest transition" style="color:var(--muted);">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Startseite
+            </a>
+            <button id="ham" aria-label="Menü öffnen"
+                    class="sm:hidden flex flex-col gap-[5px] items-center justify-center w-10 h-10 focus:outline-none" style="color:var(--text);">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- Mobile menu -->
+<div id="mobile-menu" class="fixed inset-0 z-40 flex flex-col sm:hidden" style="background:var(--bg);">
+    <div class="px-5 pt-24 pb-12 flex-1 flex flex-col">
+        <nav class="flex flex-col gap-1 mb-10">
+            <a href="index.html" class="flex items-center justify-between py-4 text-[20px] font-bold border-b" style="border-color:var(--border);color:var(--text);">
+                Startseite
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--muted2);"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="impressum.html" class="flex items-center justify-between py-4 text-[20px] font-bold border-b" style="border-color:var(--border);color:var(--text);">
+                Impressum
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--muted2);"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </nav>
+        <a href="kontakt.html" class="btn-primary w-full justify-center text-[15px] py-4">
+            Kostenlos anfragen
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+    </div>
+</div>
+
+<main class="pt-16">
+
+    <!-- Hero -->
+    <section class="grid-bg relative overflow-hidden pt-24 pb-20 sm:pt-32 sm:pb-28">
+        <div style="position:absolute;width:600px;height:600px;background:radial-gradient(ellipse at center,rgba(59,130,246,0.08) 0%,transparent 70%);top:-150px;left:50%;transform:translateX(-50%);pointer-events:none;"></div>
+        <div class="max-w-3xl mx-auto px-5 sm:px-8 relative z-10">
+            <div class="mb-5 fade-in">
+                <span class="tag">Rechtliches</span>
+            </div>
+            <h1 class="fade-in text-[clamp(2.2rem,5.5vw,4.2rem)] font-bold tracking-[-0.04em] leading-[1.05] mb-5" style="transition-delay:0.07s;">
+                Datenschutz&shy;erklärung
+            </h1>
+            <p class="fade-in text-[15px] leading-relaxed mb-8" style="color:var(--muted);transition-delay:0.14s;max-width:520px;">
+                Gemäß Art. 13 DSGVO (EU-Datenschutz-Grundverordnung) informiere ich Sie hier über die Verarbeitung personenbezogener Daten auf dieser Website.
+            </p>
+            <div class="fade-in mono text-[11px] flex items-center gap-3" style="color:var(--muted2);transition-delay:0.2s;">
+                <span>Stand: Mai 2026</span>
+                <span style="color:var(--border-bright);">·</span>
+                <span>DSGVO-konform</span>
+                <span style="color:var(--border-bright);">·</span>
+                <span>Letzte Aktualisierung: 08.05.2026</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Inhaltsverzeichnis -->
+    <section class="pb-6">
+        <div class="max-w-3xl mx-auto px-5 sm:px-8">
+            <div class="legal-block always-open fade-in mb-6">
+                <div class="legal-block-header" style="cursor:default;">
+                    <span class="section-num">Inhaltsverzeichnis</span>
+                    <h2 class="font-bold text-[15px]">Schnellnavigation</h2>
+                </div>
+                <div class="legal-block-body" style="padding:16px 28px;">
+                    <a href="#s1" class="toc-link"><span style="color:var(--muted2);">01</span> Verantwortlicher</a>
+                    <a href="#s2" class="toc-link"><span style="color:var(--muted2);">02</span> Allgemeines zur Datenverarbeitung</a>
+                    <a href="#s3" class="toc-link"><span style="color:var(--muted2);">03</span> Server-Log-Dateien</a>
+                    <a href="#s4" class="toc-link"><span style="color:var(--muted2);">04</span> Kontaktaufnahme per E-Mail oder Formular</a>
+                    <a href="#s5" class="toc-link"><span style="color:var(--muted2);">05</span> Cookies</a>
+                    <a href="#s6" class="toc-link"><span style="color:var(--muted2);">06</span> Google Fonts</a>
+                    <a href="#s7" class="toc-link"><span style="color:var(--muted2);">07</span> Externe Links &amp; eingebettete Inhalte</a>
+                    <a href="#s8" class="toc-link"><span style="color:var(--muted2);">08</span> Ihre Rechte als betroffene Person</a>
+                    <a href="#s9" class="toc-link"><span style="color:var(--muted2);">09</span> Datensicherheit</a>
+                    <a href="#s10" class="toc-link"><span style="color:var(--muted2);">10</span> Aktualität &amp; Änderungen dieser Erklärung</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sections -->
+    <section class="pb-28">
+        <div class="max-w-3xl mx-auto px-5 sm:px-8 space-y-1">
+
+            <!-- 01 Verantwortlicher -->
+            <div class="legal-block open fade-in" id="s1">
+                <div class="legal-block-header">
+                    <span class="section-num">Art. 13 DSGVO · 01</span>
+                    <h2 class="font-bold text-[15px]">Verantwortlicher</h2>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <div class="legal-block-body">
+                    <p>Verantwortlicher im Sinne der DSGVO ist:</p>
+                    <div class="highlight-box">
+                        <p><strong style="color:#93c5fd;">Antonio Hoeft</strong><br>
+                        Gormannstraße 19a · 10119 Berlin<br>
+                        Telefon: <a href="tel:+491625426438" style="color:#93c5fd;">+49 162 5426438</a><br>
+                        E-Mail: <a href="mailto:hoeftantonio@yahoo.com" style="color:#93c5fd;">hoeftantonio@yahoo.com</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 02 Allgemeines -->
+            <div class="legal-block open fade-in" id="s2" style="transition-delay:0.04s;">
+                <div class="legal-block-header">
+                    <span class="section-num">02</span>
+                    <h2 class="font-bold text-[15px]">Allgemeines zur Datenverarbeitung</h2>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <div class="legal-block-body">
+                    <p>Ich verarbeite personenbezogene Daten grundsätzlich nur, soweit dies zur Bereitstellung einer funktionsfähigen Website sowie der Inhalte und Leistungen erforderlich ist. Die Verarbeitung erfolgt nur nach Einwilligung oder wenn eine andere Rechtsgrundlage gemäß Art. 6 DSGVO vorliegt.</p>
+                    <p><strong>Rechtsgrundlagen der Verarbeitung:</strong></p>
+                    <ul>
+                        <li>Art. 6 Abs. 1 lit. a DSGVO – Einwilligung</li>
+                        <li>Art. 6 Abs. 1 lit. b DSGVO – Vertragserfüllung oder vorvertragliche Maßnahmen</li>
+                        <li>Art. 6 Abs. 1 lit. c DSGVO – Rechtliche Verpflichtung</li>
+                        <li>Art. 6 Abs. 1 lit. f DSGVO – Berechtigtes Interesse des Verantwortlichen</li>
+                    </ul>
+                    <p style="margin-top:12px;"><strong>Datenlöschung und Speicherdauer:</strong> Personenbezogene Daten werden gelöscht oder gesperrt, sobald der Zweck der Speicherung entfällt, es sei denn, gesetzliche Aufbewahrungsfristen stehen dem entgegen.</p>
+                </div>
+            </div>
+
+            <!-- 03 Server-Log -->
+            <div class="legal-block open fade-in" id="s3" style="transition-delay:0.07s;">
+                <div class="legal-block-header">
+                    <span class="section-num">03</span>
+                    <h2 class="font-bold text-[15px]">Server-Log-Dateien</h2>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <div class="legal-block-body">
+                    <p>Der Hosting-Provider dieser Website erhebt und speichert automatisch Informationen in Server-Log-Dateien, die Ihr Browser automatisch übermittelt:</p>
+                    <ul>
+                        <li>Browsertyp und -version</li>
+                        <li>Verwendetes Betriebssystem</li>
+                        <li>Referrer-URL (zuvor besuchte Seite)</li>
+                        <li>Hostname des zugreifenden Rechners</li>
+                        <li>Uhrzeit der Serveranfrage</li>
+                        <li>IP-Adresse (anonymisiert)</li>
+                    </ul>
+                    <p style="margin-top:12px;">Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht vorgenommen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einem stabilen und sicheren Betrieb der Website). Die Daten werden nach spätestens 7 Tagen automatisch gelöscht.</p>
+                </div>
+            </div>
+
+            <!-- 04 Kontakt -->
+            <div class="legal-block open fade-in" id="s4" style="transition-delay:0.1s;">
+                <div class="legal-block-header">
+                    <span class="section-num">04</span>
+                    <h2 class="font-bold text-[15px]">Kontaktaufnahme per E-Mail oder Formular</h2>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <div class="legal-block-body">
+                    <p>Wenn Sie mir per E-Mail oder über ein Kontaktformular eine Anfrage übersenden, werden die von Ihnen angegebenen Daten (Name, E-Mail-Adresse, ggf. Telefonnummer und Nachrichteninhalt) zum Zweck der Bearbeitung Ihrer Anfrage und für den Fall von Anschlussfragen bei mir gespeichert.</p>
+                    <p><strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen) bzw. Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Bearbeitung von Anfragen).</p>
+                    <p><strong>Speicherdauer:</strong> Die Daten werden gelöscht, sobald die Anfrage abschließend bearbeitet ist und keine gesetzliche Aufbewahrungspflicht besteht. In der Regel nach 6 Monaten. Bei Abschluss eines Vertrags gelten die gesetzlichen Aufbewahrungsfristen (i. d. R. 10 Jahre gem. § 147 AO).</p>
+                    <p>Eine Weitergabe an Dritte findet nicht statt. Sie können der Verarbeitung Ihrer Daten jederzeit widersprechen, sofern keine überwiegenden berechtigten Gründe entgegenstehen.</p>
+                </div>
+            </div>
+
+            <!-- 05 Cookies -->
+            <div class="legal-block open fade-in" id="s5" style="transition-delay:0.13s;">
+                <div class="legal-block-header">
+                    <span class="section-num">05</span>
+                    <h2 class="font-bold text-[15px]">Cookies</h2>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <div class="legal-block-body">
+                    <p>Diese Website verwendet ausschließlich technisch notwendige Cookies, die für den Betrieb der Website erforderlich sind. Es werden keine Tracking-Cookies, Werbe-Cookies oder Cookies zur Verhaltensanalyse eingesetzt.</p>
+                    <p><strong>Technisch notwendige Cookies</strong> dienen dazu, die Grundfunktionen der Website zu gewährleisten (z. B. Session-Cookies). Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO.</p>
+                    <p>Sie können Ihren Browser so einstellen, dass Cookies generell abgelehnt werden. In diesem Fall können einzelne Funktionen der Website möglicherweise eingeschränkt sein.</p>
+                </div>
+            </div>
+
+            <!-- 06 Google Fonts -->
+            <div class="legal-block open fade-in" id="s6" style="transition-delay:0.16s;">
+                <div class="legal-block-header">
+                    <span class="section-num">06</span>
+                    <h2 class="font-bold text-[15px]">Google Fonts (lokal eingebunden)</h2>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <div class="legal-block-body">
+                    <p>Diese Website nutzt zur einheitlichen Darstellung von Schriftarten den Dienst Google Fonts des Anbieters Google LLC. Die Schriftarten werden dabei <strong>lokal auf unserem Server</strong> gespeichert und eingebunden, sodass keine Verbindung zu den Servern von Google hergestellt wird.</p>
+                    <p>Es werden keine personenbezogenen Daten an Google übermittelt. Weitere Informationen zu Google Fonts finden Sie unter <a href="https://developers.google.com/fonts/faq" target="_blank" rel="noopener noreferrer">https://developers.google.com/fonts/faq</a>.</p>
+                    <p style="color:var(--muted2);font-size:13px;"><em>Hinweis: Falls Google Fonts noch über die CDN-URL googleapis.com eingebunden sind, sollten diese vor dem Go-Live auf lokales Hosting umgestellt werden, um eine DSGVO-Konformität sicherzustellen.</em></p>
+                </div>
+            </div>
+
+            <!-- 07 Externe Links -->
+            <div class="legal-block open fade-in" id="s7" style="transition-delay:0.19s;">
+                <div class="legal-block-header">
+                    <span class="section-num">07</span>
+                    <h2 class="font-bold text-[15px]">Externe Links &amp; eingebettete Inhalte</h2>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <div class="legal-block-body">
+                    <p>Diese Website enthält Links zu externen Websites (z. B. Vercel-gehostete Demo-Seiten, LinkedIn). Beim Anklicken dieser Links verlassen Sie meine Website. Ich habe keinen Einfluss auf die Datenschutzpraktiken der verlinkten Websites und empfehle, die jeweiligen Datenschutzerklärungen dieser Anbieter zu lesen.</p>
+                    <p>Es werden keine externen Inhalte (Iframes, eingebettete Videos, Social-Media-Widgets) geladen, die ohne Ihre Zustimmung Daten an Drittanbieter übermitteln.</p>
+                </div>
+            </div>
+
+            <!-- 08 Ihre Rechte -->
+            <div class="legal-block open fade-in" id="s8" style="transition-delay:0.22s;">
+                <div class="legal-block-header">
+                    <span class="section-num">Art. 15–22 DSGVO · 08</span>
+                    <h2 class="font-bold text-[15px]">Ihre Rechte als betroffene Person</h2>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <div class="legal-block-body">
+                    <p>Sie haben gegenüber mir als Verantwortlichem folgende Rechte hinsichtlich der Sie betreffenden personenbezogenen Daten:</p>
+                    <ul>
+                        <li><strong>Auskunftsrecht</strong> (Art. 15 DSGVO): Sie können Auskunft darüber verlangen, welche Daten von Ihnen verarbeitet werden.</li>
+                        <li><strong>Berichtigungsrecht</strong> (Art. 16 DSGVO): Sie können die Berichtigung unrichtiger Daten verlangen.</li>
+                        <li><strong>Recht auf Löschung</strong> (Art. 17 DSGVO): Sie können die Löschung Ihrer Daten verlangen, sofern keine gesetzliche Aufbewahrungspflicht besteht.</li>
+                        <li><strong>Recht auf Einschränkung</strong> (Art. 18 DSGVO): Sie können die eingeschränkte Verarbeitung Ihrer Daten verlangen.</li>
+                        <li><strong>Datenübertragbarkeit</strong> (Art. 20 DSGVO): Sie haben das Recht, Ihre Daten in einem strukturierten Format zu erhalten.</li>
+                        <li><strong>Widerspruchsrecht</strong> (Art. 21 DSGVO): Sie können der Verarbeitung Ihrer Daten widersprechen, soweit diese auf einem berechtigten Interesse beruht.</li>
+                        <li><strong>Widerruf einer Einwilligung</strong> (Art. 7 Abs. 3 DSGVO): Eine erteilte Einwilligung kann jederzeit mit Wirkung für die Zukunft widerrufen werden.</li>
+                    </ul>
+                    <p style="margin-top:14px;">Zur Geltendmachung Ihrer Rechte wenden Sie sich bitte an: <a href="mailto:hoeftantonio@yahoo.com">hoeftantonio@yahoo.com</a></p>
+                    <p><strong>Beschwerderecht:</strong> Sie haben das Recht, sich bei einer Datenschutzaufsichtsbehörde zu beschweren. Die zuständige Aufsichtsbehörde für Berlin ist:</p>
+                    <div class="highlight-box" style="margin-top:12px;">
+                        <p><strong style="color:#93c5fd;">Berliner Beauftragte für Datenschutz und Informationsfreiheit</strong><br>
+                        Friedrichstr. 219 · 10969 Berlin<br>
+                        Telefon: +49 30 13889-0<br>
+                        <a href="https://www.datenschutz-berlin.de" target="_blank" rel="noopener noreferrer" style="color:#93c5fd;">www.datenschutz-berlin.de</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 09 Datensicherheit -->
+            <div class="legal-block open fade-in" id="s9" style="transition-delay:0.25s;">
+                <div class="legal-block-header">
+                    <span class="section-num">09</span>
+                    <h2 class="font-bold text-[15px]">Datensicherheit</h2>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <div class="legal-block-body">
+                    <p>Diese Website nutzt aus Sicherheitsgründen und zum Schutz der Übertragung personenbezogener Daten eine SSL-/TLS-Verschlüsselung. Eine verschlüsselte Verbindung erkennen Sie daran, dass die Adresszeile des Browsers von „http://" auf „https://" wechselt.</p>
+                    <p>Ich setze technische und organisatorische Sicherheitsmaßnahmen ein, um Ihre Daten gegen zufällige oder vorsätzliche Manipulation, Verlust, Zerstörung oder den Zugriff unberechtigter Personen zu schützen. Die Sicherheitsmaßnahmen werden entsprechend der technologischen Entwicklung fortlaufend verbessert.</p>
+                </div>
+            </div>
+
+            <!-- 10 Aktualität -->
+            <div class="legal-block open fade-in mb-10" id="s10" style="transition-delay:0.28s;">
+                <div class="legal-block-header">
+                    <span class="section-num">10</span>
+                    <h2 class="font-bold text-[15px]">Aktualität &amp; Änderungen dieser Erklärung</h2>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <div class="legal-block-body">
+                    <p>Diese Datenschutzerklärung hat den Stand vom <strong>08. Mai 2026</strong>. Durch die Weiterentwicklung meiner Website oder aufgrund geänderter gesetzlicher bzw. behördlicher Vorgaben kann es notwendig werden, diese Datenschutzerklärung zu ändern.</p>
+                    <p>Die jeweils aktuelle Datenschutzerklärung kann jederzeit auf dieser Seite abgerufen werden. Ich empfehle, diese Seite regelmäßig zu besuchen, um über Änderungen informiert zu sein.</p>
+                </div>
+            </div>
+
+            <!-- Back link -->
+            <div class="fade-in flex gap-5 items-center" style="transition-delay:0.3s;">
+                <a href="index.html" class="btn-primary text-[13px] py-2.5 px-5">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                    Zurück zur Startseite
+                </a>
+                <a href="impressum.html" class="mono text-[12px] transition" style="color:var(--muted);">
+                    Impressum →
+                </a>
+            </div>
+
+        </div>
+    </section>
+</main>
+
+<footer class="py-10" style="border-top:1px solid var(--border);background:var(--bg);">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 flex flex-col sm:flex-row justify-between items-center gap-6">
+        <p class="mono text-[11px]" style="color:var(--muted2);">
+            © 2026 Metalldigital — Webentwicklung für Metallbau · Deutschland
+        </p>
+        <div class="flex gap-6 sm:gap-8 mono text-[11px]" style="color:var(--muted2);">
+            <a href="impressum.html" class="hover:text-white transition">Impressum</a>
+            <a href="datenschutz.html" class="hover:text-white transition" style="color:var(--accent);">Datenschutz</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    /* Accordion */
+    document.querySelectorAll('.legal-block:not(.always-open) .legal-block-header').forEach(header => {
+        header.addEventListener('click', () => {
+            header.closest('.legal-block').classList.toggle('open');
+        });
+    });
+
+    /* Mobile menu */
+    const ham = document.getElementById('ham');
+    const mobileMenu = document.getElementById('mobile-menu');
+    ham.addEventListener('click', () => {
+        ham.classList.toggle('is-open');
+        mobileMenu.classList.toggle('open');
+        document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        ham.classList.remove('is-open');
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow = '';
+    }));
+
+    /* Fade-in */
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.06 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    /* Smooth scroll for TOC */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            e.preventDefault();
+            const target = document.querySelector(a.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Auto-open if collapsed
+                if (!target.classList.contains('open') && !target.classList.contains('always-open')) {
+                    target.classList.add('open');
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>
